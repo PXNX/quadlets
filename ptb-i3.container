@@ -1,0 +1,17 @@
+[Unit]
+Description="ptb-i3"
+After=local-fs.target
+
+[Container]
+Image=localhost/ptb-i3:latest
+AutoUpdate=registry
+ContainerName=ptb-i3
+
+EnvironmentFile=%h/projects/ptb-i3/.env
+Environment=CONTAINER=true
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=multi-user.target default.target
