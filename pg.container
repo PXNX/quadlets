@@ -13,27 +13,11 @@ Environment=POSTGRES_PASSWORD=postgres
 Environment=POSTGRES_DB=postgres
 Environment=PGDATA=/var/lib/postgresql/data/pgdata
 
-
-
 # Volume mappings for persistent data
 Volume=postgres-data:/var/lib/postgresql/data
 
-# Set resource limits
-CPUQuota=100%
-MemoryLimit=1G
-
 [Service]
 Restart=always
-
-
-
-# Health check
-HealthCmd=["pg_isready", "-U", "postgres"]
-HealthInterval=10s
-HealthTimeout=5s
-HealthRetries=3
-HealthStartPeriod=30s
-
 
 [Install]
 WantedBy=multi-user.target default.target
