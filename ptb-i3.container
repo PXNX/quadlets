@@ -3,15 +3,25 @@ Description="ptb-i3"
 After=local-fs.target
 
 [Container]
-Image=localhost/ptb-i3:latest
+Image=docker.io/library/python:3.12-slim
 AutoUpdate=registry
 ContainerName=ptb-i3
 
+WorkingDir=/app
+Volume=%h/projects/ptb-i3/bot:/app:Z
+
 EnvironmentFile=%h/projects/ptb-i3/.env
 Environment=CONTAINER=true
+
+Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python main.py"
+
+Network=host
 
 [Service]
 Restart=always
 
 [Install]
-WantedBy=multi-user.target default.target
+WantedBy=default.target
+
+
+
