@@ -1,9 +1,7 @@
-# postgres.container - Podman Quadlet for PostgreSQL
-# Save this file to ~/.config/containers/systemd/postgres.container
-
 [Container]
-# PostgreSQL image to use
-Image=docker.io/library/postgres:17
+Image=docker.io/library/postgres:16
+AutoUpdate=registry
+PublishPort=5432:5432
 
 # Environment variables for PostgreSQL setup
 Environment=POSTGRES_USER=postgres
@@ -11,8 +9,7 @@ Environment=POSTGRES_PASSWORD=postgres
 Environment=POSTGRES_DB=postgres
 Environment=PGDATA=/var/lib/postgresql/data/pgdata
 
-# Expose PostgreSQL port
-PublishPort=5432:5432
+
 
 # Volume mappings for persistent data
 Volume=postgres-data:/var/lib/postgresql/data
@@ -21,8 +18,10 @@ Volume=postgres-data:/var/lib/postgresql/data
 CPUQuota=100%
 MemoryLimit=1G
 
-# Restart policy
+[Service]
 Restart=always
+
+
 
 # Health check
 HealthCmd=["pg_isready", "-U", "postgres"]
@@ -36,5 +35,4 @@ Label=description="PostgreSQL Database Server"
 Label=app=postgres
 
 [Install]
-# Start at boot
 WantedBy=default.target
