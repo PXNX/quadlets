@@ -1,7 +1,6 @@
 [Unit]
 Description="ptb-mn"
-After=local-fs.target network-online.target
-Requires=network-online.target
+After=local-fs.target
 
 [Container]
 Image=docker.io/library/python:3.12-slim
