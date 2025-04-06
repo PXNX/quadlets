@@ -1,13 +1,14 @@
 [Unit]
 Description="ptb-mn"
 After=local-fs.target network-online.target
-Wants=network-online.target
+Requires=network-online.target
 
 [Container]
 Image=docker.io/library/python:3.12-slim
 AutoUpdate=registry
 ContainerName=ptb-mn
 
+LogDriver=journald
 WorkingDir=/app
 Volume=%h/projects/ptb-mn/bot:/app:Z
 
