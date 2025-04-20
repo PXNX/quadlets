@@ -10,6 +10,7 @@ ContainerName=ptb-nn
 LogDriver=journald
 WorkingDir=/app
 Volume=%h/projects/ptb-nn/bot:/app:Z
+Network=pgnet
 
 EnvironmentFile=%h/projects/ptb-nn/.env
 Environment=CONTAINER=true
@@ -17,8 +18,7 @@ Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
 
 Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python -u main.py"
-
-Network=pgnet
+DependsOn=postgres.service
 
 [Service]
 Restart=always
