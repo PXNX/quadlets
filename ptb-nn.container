@@ -11,7 +11,7 @@ LogDriver=journald
 WorkingDir=/app
 Volume=%h/projects/ptb-nn/bot:/app:Z
 #Network=pgnet
-#DependsOn=pg.service
+DependsOn=pg.service
 
 
 EnvironmentFile=%h/projects/ptb-nn/.env
