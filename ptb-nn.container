@@ -1,6 +1,8 @@
 [Unit]
 Description="ptb-nn"
-After=local-fs.target
+#After=local-fs.target
+Wants=network-online.target
+After=network-online.target
 
 [Container]
 Image=docker.io/library/python:3.12-slim
@@ -10,8 +12,8 @@ ContainerName=ptb-nn
 LogDriver=journald
 WorkingDir=/app
 Volume=%h/projects/ptb-nn/bot:/app:Z
-#Network=pgnet
-DependsOn=pg.service
+Network=pgnet
+#DependsOn=pg.service
 
 
 EnvironmentFile=%h/projects/ptb-nn/.env
