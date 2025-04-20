@@ -16,6 +16,8 @@ Environment=PGDATA=/var/lib/postgresql/data/pgdata
 # Volume mappings for persistent data
 Volume=postgres-data:/var/lib/postgresql/data
 
+Network=bots-net.network
+
 [Service]
 Restart=always
 
