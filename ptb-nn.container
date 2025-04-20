@@ -12,7 +12,7 @@ ContainerName=ptb-nn
 LogDriver=journald
 WorkingDir=/app
 Volume=%h/projects/ptb-nn/bot:/app:Z
-Network=pgnet.network
+Network=pgnet
 #DependsOn=pg.service
 
 
