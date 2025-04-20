@@ -1,3 +1,6 @@
+[Match]
+Name = pgnet
+
 [Network]
 Subnet=10.88.100.0/24
 Gateway=10.88.100.1
