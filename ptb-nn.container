@@ -10,7 +10,7 @@ ContainerName=ptb-nn
 LogDriver=journald
 WorkingDir=/app
 Volume=%h/projects/ptb-nn/bot:/app:Z
-Network=pgnet
+Network=pgnet.network
 
 EnvironmentFile=%h/projects/ptb-nn/.env
 Environment=CONTAINER=true
