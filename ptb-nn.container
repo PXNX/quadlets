@@ -5,7 +5,7 @@ Wants=network-online.target
 After=network-online.target
 
 [Container]
-Image=ptb-nn-bot:latest
+Image=ptb-nn_bot:latest
 AutoUpdate=registry
 
 WorkingDir=/bot
