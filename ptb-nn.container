@@ -12,6 +12,8 @@ ContainerName=ptb-nn
 LogDriver=journald
 WorkingDir=/app
 Volume=%h/projects/ptb-nn/bot:/app:Z
+Environment=PYTHONPATH=/app
+
 #Network=pgnet
 #DependsOn=pg.service
 
@@ -21,7 +23,8 @@ Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
 
-Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python -u main.py"
+
+Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python -u bot.main"
 
 [Service]
 Restart=on-failure
