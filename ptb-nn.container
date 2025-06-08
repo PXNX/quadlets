@@ -24,7 +24,7 @@ Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
 
 
-Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python -u bot.main"
+Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python -m bot.main"
 
 [Service]
 Restart=on-failure
