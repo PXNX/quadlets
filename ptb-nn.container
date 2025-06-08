@@ -8,6 +8,7 @@ After=network-online.target
 Image=ghcr.io/pxnx/ptb-nn:master
 AutoUpdate=registry
 
+EnvironmentFile=%h/projects/ptb-nn/.env
 WorkingDir=/bot
 Exec=python -m main
 
