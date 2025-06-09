@@ -1,0 +1,21 @@
+[Unit]
+Description="ptb-bs"
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+ContainerName=ptb-bs
+Image=ghcr.io/pxnx/ptb-bs:master
+AutoUpdate=registry
+
+EnvironmentFile=%h/projects/ptb-bs/.env
+Environment=PYTHONPATH=/
+WorkingDir=/bot
+Exec=python -m main
+
+[Service]
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=default.target
