@@ -9,6 +9,7 @@ Image=ghcr.io/pxnx/ptb-nn:master
 AutoUpdate=registry
 
 EnvironmentFile=%h/projects/ptb-nn/.env
+Environment=PYTHONPATH=/
 WorkingDir=/bot
 Exec=python -m main
 
