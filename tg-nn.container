@@ -13,6 +13,7 @@ Volume=%h/projects/tg-nn/bot:/app:Z
 
 EnvironmentFile=%h/projects/tg-nn/.env
 Environment=CONTAINER=true
+Environment=PYTHONPATH=/
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
 
