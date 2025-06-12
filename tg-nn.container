@@ -8,8 +8,8 @@ AutoUpdate=registry
 ContainerName=tg-nn
 
 LogDriver=journald
-WorkingDir=/app
-Volume=%h/projects/tg-nn/bot:/app:Z
+WorkingDir=/bot
+Volume=%h/projects/tg-nn/bot:/bot:Z
 
 EnvironmentFile=%h/projects/tg-nn/.env
 Environment=CONTAINER=true
