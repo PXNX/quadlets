@@ -1,0 +1,12 @@
+[Unit]
+Description=PGAdmin
+After=local-fs.target
+
+[Container]
+Image=docker.io/dpage/pgadmin4
+ContainerName=pgadmin
+Environment=PGADMIN_DEFAULT_EMAIL=nx@pm.me
+Environment=PGADMIN_DEFAULT_PASSWORD=pass
+
+[Install]
+WantedBy=default.target
