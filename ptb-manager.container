@@ -9,19 +9,30 @@ ContainerName=ptb-manager
 
 LogDriver=journald
 WorkingDir=/app
+
+# Mount bot code
 Volume=%h/projects/ptb-manager/bot:/app:Z
 
-# Mount podman socket to allow container to control host podman
+# Mount podman socket to control host containers
 Volume=/run/user/%U/podman/podman.sock:/run/podman/podman.sock:Z
+
+# Mount projects directory to access .env files
+Volume=%h/projects:/host/projects:Z
+
+# Mount quadlets directory
+Volume=%h/.config/containers/systemd:/host/quadlets:Z
 
 EnvironmentFile=%h/projects/ptb-manager/.env
 Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
-# Set podman to use the mounted socket
-Environment=PODMAN_HOST=unix:///run/podman/podman.sock
+Environment=PODMAN_SOCK=/run/podman/podman.sock
 
-Exec=sh -c "apt-get update && apt-get install -y podman && pip install --no-cache-dir -r requirements.txt && python -u main.py"
+# Set paths for containerized environment
+Environment=PROJECTS_BASE=/host/projects
+Environment=QUADLETS_DIR=/host/quadlets
+
+Exec=sh -c "apt-get update && apt-get install -y podman gh procps && pip install --no-cache-dir -r requirements.txt && python -u main.py"
 
 #Network=pgnet.network
 
