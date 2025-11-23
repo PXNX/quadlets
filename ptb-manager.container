@@ -11,12 +11,17 @@ LogDriver=journald
 WorkingDir=/app
 Volume=%h/projects/ptb-manager/bot:/app:Z
 
+# Mount podman socket to allow container to control host podman
+Volume=/run/user/%U/podman/podman.sock:/run/podman/podman.sock:Z
+
 EnvironmentFile=%h/projects/ptb-manager/.env
 Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
+# Set podman to use the mounted socket
+Environment=PODMAN_HOST=unix:///run/podman/podman.sock
 
-Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python -u main.py"
+Exec=sh -c "apt-get update && apt-get install -y podman && pip install --no-cache-dir -r requirements.txt && python -u main.py"
 
 #Network=pgnet.network
 
