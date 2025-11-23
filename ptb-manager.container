@@ -32,13 +32,11 @@ Environment=PODMAN_SOCK=/run/podman/podman.sock
 Environment=PROJECTS_BASE=/host/projects
 Environment=QUADLETS_DIR=/host/quadlets
 
-# Install podman-remote
-Exec=sh -c "apt-get update && apt-get install -y wget gh procps && \
-    wget -q https://github.com/containers/podman/releases/download/v5.3.1/podman-remote-static-linux_amd64.tar.gz && \
-    tar -xzf podman-remote-static-linux_amd64.tar.gz && \
-    cp podman-remote-static /usr/local/bin/podman && \
-    chmod +x /usr/local/bin/podman && \
-    rm -rf podman-remote-static* && \
+# Install podman from Debian repos (easier)
+Exec=sh -c "apt-get update && \
+    apt-get install -y podman gh procps && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* && \
     pip install --no-cache-dir -r requirements.txt && \
     python -u main.py"
 
