@@ -1,0 +1,27 @@
+[Unit]
+Description="ptb-footer"
+After=local-fs.target
+
+[Container]
+Image=docker.io/library/python:3.13-slim
+AutoUpdate=registry
+ContainerName=ptb-footer
+
+WorkingDir=/app
+Volume=%h/projects/ptb-footer/bot:/app:Z
+
+EnvironmentFile=%h/projects/ptb-footer/.env
+Environment=CONTAINER=true
+
+Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python main.py"
+
+Network=host
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
+
+
+
