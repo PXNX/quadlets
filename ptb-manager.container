@@ -10,9 +10,6 @@ ContainerName=ptb-manager
 LogDriver=journald
 WorkingDir=/app
 
-# Run with host's PID namespace to allow systemctl communication
-PidMode=host
-
 # Mount bot code
 Volume=%h/projects/ptb-manager/bot:/app:Z
 
@@ -28,17 +25,11 @@ Volume=%h/.config/containers/systemd:/host/quadlets:Z
 # Mount GitHub CLI config for authentication
 Volume=%h/.config/gh:/root/.config/gh:ro,Z
 
-# Mount host's systemd user session for systemctl commands
-Volume=/run/user/%U/bus:/run/user/%U/bus:Z
-Volume=/run/user/%U/systemd:/run/user/%U/systemd:Z
-
 EnvironmentFile=%h/projects/ptb-manager/.env
 Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
 Environment=PODMAN_SOCK=/run/podman/podman.sock
-Environment=XDG_RUNTIME_DIR=/run/user/%U
-Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/%U/bus
 
 # Set paths for containerized environment
 Environment=PROJECTS_BASE=/host/projects
@@ -46,7 +37,7 @@ Environment=QUADLETS_DIR=/host/quadlets
 
 # Install git, podman, and gh CLI, then configure git to use gh credentials
 Exec=sh -c "apt-get update && \
-    apt-get install -y git podman gh procps systemd && \
+    apt-get install -y git podman gh procps && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     git config --global credential.helper 'cache --timeout=3600' && \
