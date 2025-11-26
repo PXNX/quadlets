@@ -32,9 +32,9 @@ Environment=PODMAN_SOCK=/run/podman/podman.sock
 Environment=PROJECTS_BASE=/host/projects
 Environment=QUADLETS_DIR=/host/quadlets
 
-# Install podman from Debian repos (easier)
+# Install git, podman, and gh CLI
 Exec=sh -c "apt-get update && \
-    apt-get install -y podman gh procps && \
+    apt-get install -y git podman gh procps && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     pip install --no-cache-dir -r requirements.txt && \
