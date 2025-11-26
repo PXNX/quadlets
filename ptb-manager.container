@@ -22,6 +22,9 @@ Volume=%h/projects:/host/projects:Z
 # Mount quadlets directory
 Volume=%h/.config/containers/systemd:/host/quadlets:Z
 
+# Mount GitHub CLI config for authentication
+Volume=%h/.config/gh:/root/.config/gh:ro,Z
+
 EnvironmentFile=%h/projects/ptb-manager/.env
 Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
