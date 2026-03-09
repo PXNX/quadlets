@@ -25,11 +25,15 @@ Volume=%h/.config/containers/systemd:/host/quadlets:Z
 # Mount GitHub CLI config for authentication
 Volume=%h/.config/gh:/root/.config/gh:ro,Z
 
+# Mount systemd user bus to allow systemctl --user status
+Volume=/run/user/%U/systemd:/run/user/0/systemd:Z
+
 EnvironmentFile=%h/projects/ptb-manager/.env
 Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
 Environment=PODMAN_SOCK=/run/podman/podman.sock
+Environment=XDG_RUNTIME_DIR=/run/user/0
 
 # Set paths for containerized environment
 Environment=PROJECTS_BASE=/host/projects
