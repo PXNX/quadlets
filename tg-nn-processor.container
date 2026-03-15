@@ -1,0 +1,26 @@
+[Unit]
+Description="tg-nn Processor"
+After=local-fs.target
+
+[Container]
+Image=docker.io/library/python:3.12-slim
+AutoUpdate=registry
+ContainerName=tg-nn-processor
+
+LogDriver=journald
+WorkingDir=/bot
+Volume=%h/projects/tg-nn/bot:/bot:Z
+
+EnvironmentFile=%h/projects/tg-nn/.env
+Environment=CONTAINER=true
+Environment=PYTHONPATH=/
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+
+Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python -u processor/main.py"
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
