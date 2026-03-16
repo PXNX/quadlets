@@ -1,0 +1,19 @@
+[Unit]
+Description="ptb-travel"
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+ContainerName=ptb-travel
+Image=ghcr.io/pxnx/ptb-travel:master
+AutoUpdate=registry
+EnvironmentFile=%h/projects/ptb-travel/.env
+WorkingDir=/app
+Exec=python main.py
+
+[Service]
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=default.target
