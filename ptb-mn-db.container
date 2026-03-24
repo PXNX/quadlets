@@ -1,0 +1,31 @@
+[Unit]
+Description="PostgreSQL Database for ptb-mn"
+After=local-fs.target
+
+[Container]
+Image=docker.io/library/postgres:17
+AutoUpdate=registry
+PublishPort=5432:5432
+ContainerName=ptb-mn-db
+
+# Environment variables for PostgreSQL setup
+# For local development, using simple defaults. 
+# Consider using an EnvironmentFile for production secrets.
+Environment=POSTGRES_USER=ptb_user
+Environment=POSTGRES_PASSWORD=ptb_password
+Environment=POSTGRES_DB=ptb_mn
+Environment=PGDATA=/var/lib/postgresql/data/pgdata
+
+# Volume mappings for persistent data
+# Using a named volume for the database data
+Volume=ptb-mn-db-data:/var/lib/postgresql/data
+
+# Connect to the common pgnet network if available
+Network=pgnet
+
+[Service]
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target default.target
