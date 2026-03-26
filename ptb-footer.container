@@ -3,7 +3,7 @@ Description="ptb-footer"
 After=local-fs.target
 
 [Container]
-Image=docker.io/library/python:3.13-slim
+Image=ghcr.io/pxnx/ptb-footer:latest
 AutoUpdate=registry
 ContainerName=ptb-footer
 
@@ -15,7 +15,7 @@ Environment=CONTAINER=true
 
 Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python main.py"
 
-Network=host
+Network=pgnet.network
 
 [Service]
 Restart=always

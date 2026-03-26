@@ -1,17 +1,17 @@
 [Unit]
-Description="ptb-mn"
+Description="ptb-suggest"
 After=local-fs.target
 
 [Container]
-Image=ghcr.io/militaernews/ptb-mn:latest
+Image=ghcr.io/militaernews/ptb-suggest:latest
 AutoUpdate=registry
-ContainerName=ptb-mn
+ContainerName=ptb-suggest
 
 LogDriver=journald
 WorkingDir=/app
-Volume=%h/projects/ptb-mn/bot:/app:Z
+Volume=%h/projects/ptb-suggest/bot:/app:Z
 
-EnvironmentFile=%h/projects/ptb-mn/.env
+EnvironmentFile=%h/projects/ptb-suggest/.env
 Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1

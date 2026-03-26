@@ -5,13 +5,15 @@ After=network-online.target
 
 [Container]
 ContainerName=ptb-nn
-Image=ghcr.io/pxnx/ptb-nn:master
+Image=ghcr.io/militaernews/ptb-nn:latest
 AutoUpdate=registry
 
 EnvironmentFile=%h/projects/ptb-nn/.env
 Environment=PYTHONPATH=/
 WorkingDir=/bot
 Exec=python -m main
+
+Network=pgnet.network
 
 [Service]
 Restart=on-failure
