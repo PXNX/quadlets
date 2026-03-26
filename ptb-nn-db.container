@@ -1,0 +1,28 @@
+[Unit]
+Description="PostgreSQL Database for ptb-nn"
+After=local-fs.target
+
+[Container]
+Image=docker.io/library/postgres:17
+AutoUpdate=registry
+PublishPort=5433:5432
+ContainerName=ptb-nn-db
+
+# Environment variables for PostgreSQL setup
+Environment=POSTGRES_USER=nn_user
+Environment=POSTGRES_PASSWORD=nn_password
+Environment=POSTGRES_DB=ptb_nn
+Environment=PGDATA=/var/lib/postgresql/data/pgdata
+
+# Volume mappings for persistent data
+Volume=ptb-nn-db-data:/var/lib/postgresql/data
+
+# Connect to the common pgnet network
+Network=pgnet.network
+
+[Service]
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target default.target
