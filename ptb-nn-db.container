@@ -1,6 +1,7 @@
 [Unit]
 Description="PostgreSQL Database for ptb-nn"
-After=local-fs.target
+After=local-fs.target pgnet-network.service
+Wants=pgnet-network.service
 
 [Container]
 Image=docker.io/library/postgres:17
