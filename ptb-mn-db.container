@@ -21,7 +21,7 @@ Environment=PGDATA=/var/lib/postgresql/data/pgdata
 Volume=ptb-mn-db-data:/var/lib/postgresql/data
 
 # Connect to the common pgnet network if available
-Network=pgnet
+Network=pgnet.network
 
 [Service]
 Restart=on-failure
