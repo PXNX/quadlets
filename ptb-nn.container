@@ -5,13 +5,19 @@ After=network-online.target pgnet-network.service
 
 [Container]
 ContainerName=ptb-nn
-Image=ghcr.io/militaernews/ptb-nn:latest
-AutoUpdate=registry
+# Use a standard Python image instead of a pre-built package
+Image=docker.io/library/python:3.13-slim
 
+# Mount the local bot directory and install requirements at runtime
+Volume=%h/projects/ptb-nn/bot:/bot:Z
+WorkingDir=/
+
+# Environment setup
 EnvironmentFile=%h/projects/ptb-nn/.env
 Environment=PYTHONPATH=/
-WorkingDir=/
-Exec=python -m bot.main
+
+# Install dependencies and start the bot
+Exec=sh -c "pip install --no-cache-dir -r /bot/requirements.txt && python -m bot.main"
 
 Network=pgnet.network
 
