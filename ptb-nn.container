@@ -1,7 +1,7 @@
 [Unit]
 Description="ptb-nn"
-Wants=network-online.target
-After=network-online.target
+Wants=network-online.target pgnet-network.service
+After=network-online.target pgnet-network.service
 
 [Container]
 ContainerName=ptb-nn
@@ -10,8 +10,8 @@ AutoUpdate=registry
 
 EnvironmentFile=%h/projects/ptb-nn/.env
 Environment=PYTHONPATH=/
-WorkingDir=/bot
-Exec=python -m main
+WorkingDir=/
+Exec=python -m bot.main
 
 Network=pgnet.network
 
