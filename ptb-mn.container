@@ -10,6 +10,7 @@ ContainerName=ptb-mn
 LogDriver=journald
 WorkingDir=/app
 Volume=%h/projects/ptb-mn/bot:/app:Z
+Volume=%h/projects/ptb-mn/secrets:/app/secrets:Z,ro
 
 EnvironmentFile=%h/projects/ptb-mn/.env
 Environment=CONTAINER=true
