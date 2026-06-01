@@ -19,7 +19,7 @@ Environment=PYTHONUNBUFFERED=1
 
 Exec=sh -c "pip install --no-cache-dir -r requirements.txt \
   && node /opt/bgutil/server/build/main.js & \
-  until curl -sf http://localhost:4416/ >/dev/null 2>&1; do sleep 1; done \
+  until curl -sf http://127.0.0.1:4416/ >/dev/null 2>&1; do sleep 1; done \
   && python -u main.py"
 
 Network=pgnet.network
