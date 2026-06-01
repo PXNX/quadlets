@@ -17,7 +17,7 @@ Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
 
-Exec=sh -c "pip install --no-cache-dir -r requirements.txt && node /opt/bgutil/server/build/server.js & sleep 3 && python -u main.py"
+Exec=sh -c "pip install --no-cache-dir -r requirements.txt && node /opt/bgutil/server/build/main.js & sleep 5 && python -u main.py"
 
 Network=pgnet.network
 
