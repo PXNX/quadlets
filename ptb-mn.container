@@ -17,10 +17,11 @@ Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
 
-Exec=sh -c "pip install --no-cache-dir -r requirements.txt \
-  && node /opt/bgutil/server/build/main.js & \
-  until curl -sf http://127.0.0.1:4416/ >/dev/null 2>&1; do sleep 1; done \
-  && python -u main.py"
+node /opt/bgutil/server/build/main.js & NODE_PID=$!
+until curl -sf http://127.0.0.1:4416/ >/dev/null 2>&1; do
+  kill -0 $NODE_PID 2>/dev/null || { echo "bgutil server died"; exit 1; }
+  sleep 1
+done
 
 Network=pgnet.network
 
