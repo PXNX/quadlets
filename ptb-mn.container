@@ -17,8 +17,7 @@ Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
 
-Exec=sh -c "pip install --no-cache-dir -r requirements.txt && node /usr/local/lib/node_modules/@ybd-project/bgutil-ytdlp-pot-provider/build/server.js &  python -u main.py"
-
+Exec=sh -c "pip install --no-cache-dir -r requirements.txt && node /opt/bgutil/server/dist/server.js & sleep 3 && python -u main.py"
 Network=pgnet.network
 
 [Service]
