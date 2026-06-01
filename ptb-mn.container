@@ -18,13 +18,10 @@ Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
 
 Exec=sh -c "\
-  echo 'Step 1: Installing Python dependencies...' && \
-  pip install --no-cache-dir -r requirements.txt && \
-  echo 'Step 1: Done.' && \
   echo 'Step 2: Starting bgutil POT server...' && \
   node /opt/bgutil/server/build/main.js & NODE_PID=$! && \
   echo 'Step 2: bgutil PID is '$NODE_PID && \
-  echo 'Step 3: Waiting 3s for bgutil to be ready...' && \
+  echo 'Step 3: Waiting for bgutil...' && \
   sleep 3 && \
   kill -0 $NODE_PID 2>/dev/null || { echo 'Step 3: bgutil server died, aborting.'; exit 1; } && \
   echo 'Step 3: bgutil is alive.' && \
