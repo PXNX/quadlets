@@ -27,6 +27,7 @@ Volume=%h/.config/gh:/root/.config/gh:ro,Z
 
 # Mount systemd user bus to allow systemctl --user status
 Volume=/run/user/%U/systemd:/run/user/0/systemd:Z
+Volume=/run/user/%U/bus:/run/user/0/bus:Z
 
 EnvironmentFile=%h/projects/ptb-manager/.env
 Environment=CONTAINER=true
