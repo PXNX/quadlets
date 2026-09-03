@@ -3,7 +3,7 @@ Description="ptb-footer"
 After=local-fs.target
 
 [Container]
-Image=ghcr.io/pxnx/ptb-footer:latest
+Image=docker.io/library/python:3.13-slim
 AutoUpdate=registry
 ContainerName=ptb-footer
 
