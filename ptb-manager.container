@@ -37,13 +37,18 @@ Environment=XDG_RUNTIME_DIR=/run/user/0
 Environment=PROJECTS_BASE=/host/projects
 Environment=QUADLETS_DIR=/host/quadlets
 
-# Install git, podman, and gh CLI. GitHub auth is per-Telegram-user (see
-# /ghauth in the bot) - each gh/git call gets that user's token injected via
-# GH_TOKEN for just that subprocess, so no shared credential setup is needed here.
+# Install git, podman, and gh CLI. `gh auth setup-git` wires git's credential
+# helper to call back into `gh auth git-credential` on every git invocation -
+# that's just plumbing, not a shared identity: it resolves auth dynamically
+# from whatever GH_TOKEN is set in *that* subprocess's env, which the bot sets
+# per Telegram user via /ghauth for each gh/git call. Deliberately NOT paired
+# with a git credential cache - caching would leak one user's token into
+# another user's git calls for the cache TTL.
 Exec=sh -c "apt-get update && \
     apt-get install -y git podman gh procps postgresql-client && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
+    gh auth setup-git --hostname github.com && \
     pip install --no-cache-dir -r requirements.txt && \
     python -u main.py"
 
