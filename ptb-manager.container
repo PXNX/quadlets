@@ -22,9 +22,6 @@ Volume=%h/projects:/host/projects:Z
 # Mount quadlets directory
 Volume=%h/.config/containers/systemd:/host/quadlets:Z
 
-# Mount GitHub CLI config for authentication
-Volume=%h/.config/gh:/root/.config/gh:ro,Z
-
 # Mount systemd user bus to allow systemctl --user status
 Volume=/run/user/%U/systemd:/run/user/0/systemd:Z
 Volume=/run/user/%U/bus:/run/user/0/bus:Z
@@ -40,13 +37,13 @@ Environment=XDG_RUNTIME_DIR=/run/user/0
 Environment=PROJECTS_BASE=/host/projects
 Environment=QUADLETS_DIR=/host/quadlets
 
-# Install git, podman, and gh CLI, then configure git to use gh credentials
+# Install git, podman, and gh CLI. GitHub auth is per-Telegram-user (see
+# /ghauth in the bot) - each gh/git call gets that user's token injected via
+# GH_TOKEN for just that subprocess, so no shared credential setup is needed here.
 Exec=sh -c "apt-get update && \
     apt-get install -y git podman gh procps postgresql-client && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
-    git config --global credential.helper 'cache --timeout=3600' && \
-    gh auth setup-git && \
     pip install --no-cache-dir -r requirements.txt && \
     python -u main.py"
 
