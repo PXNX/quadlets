@@ -1,0 +1,24 @@
+[Unit]
+Description="ptb-llm-chat (German OpenRouter conversation bot)"
+Wants=network-online.target
+After=network-online.target
+
+[Container]
+ContainerName=ptb-llm-chat
+Image=docker.io/library/python:3.13-slim
+AutoUpdate=registry
+LogDriver=journald
+WorkingDir=/app
+Volume=%h/projects/ptb-llm-chat:/app:Z
+EnvironmentFile=%h/projects/ptb-llm-chat/.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+
+Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python -u main.py"
+
+[Service]
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=default.target
