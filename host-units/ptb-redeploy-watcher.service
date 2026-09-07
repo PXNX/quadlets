@@ -1,0 +1,6 @@
+[Unit]
+Description="Process ptb-manager redeploy/restart trigger files"
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/systemd/user/ptb-redeploy-watcher.sh
