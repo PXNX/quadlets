@@ -1,0 +1,26 @@
+[Unit]
+Description="tg-mn"
+After=local-fs.target
+
+[Container]
+Image=docker.io/library/python:3.12-slim
+AutoUpdate=registry
+ContainerName=tg-mn
+
+LogDriver=journald
+WorkingDir=/app
+Volume=%h/projects/tg-mn:/app:Z
+
+EnvironmentFile=%h/projects/tg-mn/.env
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONUNBUFFERED=1
+
+Exec=sh -c "pip install --no-cache-dir -r requirements.txt && python -u main.py"
+
+Network=pgnet.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
