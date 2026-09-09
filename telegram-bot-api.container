@@ -1,0 +1,26 @@
+[Unit]
+Description="Telegram Bot API (self-hosted, raises the 50MB send/receive limit to 2000MB)"
+After=local-fs.target pgnet-network.service
+Wants=pgnet-network.service
+
+[Container]
+Image=docker.io/aiogram/telegram-bot-api:latest
+AutoUpdate=registry
+ContainerName=telegram-bot-api
+LogDriver=journald
+
+# TELEGRAM_API_ID / TELEGRAM_API_HASH (from https://my.telegram.org) live only
+# in this file on the host - never committed here.
+EnvironmentFile=%h/projects/telegram-bot-api/.env
+
+Volume=telegram-bot-api-data:/var/lib/telegram-bot-api
+
+# Reachable by other bots on pgnet as http://telegram-bot-api:8081 - not
+# published to the host, only other containers on pgnet need it.
+Network=pgnet.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
