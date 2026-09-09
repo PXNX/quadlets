@@ -1,0 +1,20 @@
+[Unit]
+Description="bgutil PO-token provider for yt-dlp (lets ptb-suggest download YouTube without cookies)"
+After=local-fs.target pgnet-network.service
+Wants=pgnet-network.service
+
+[Container]
+Image=docker.io/brainicism/bgutil-ytdlp-pot-provider:latest
+AutoUpdate=registry
+ContainerName=bgutil-provider
+LogDriver=journald
+
+# Reachable by other bots on pgnet as http://bgutil-provider:4416 - not
+# published to the host, generates tokens for anyone who can reach it.
+Network=pgnet.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
