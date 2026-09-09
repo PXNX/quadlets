@@ -1,7 +1,3 @@
-[Unit]
-Description="ptb-manager"
-After=local-fs.target
-
 [Container]
 Image=docker.io/library/python:3.13-slim
 AutoUpdate=registry
@@ -22,37 +18,33 @@ Volume=%h/projects:/host/projects:Z
 # Mount quadlets directory
 Volume=%h/.config/containers/systemd:/host/quadlets:Z
 
-# Mount systemd user bus to allow systemctl --user status
-Volume=/run/user/%U/systemd:/run/user/0/systemd:Z
-Volume=/run/user/%U/bus:/run/user/0/bus:Z
+# MOUNT CHANGE: Mount the whole run directory to access the real host bus
+Volume=/run/user/1001:/host/run/user/1001:ro
 
 EnvironmentFile=%h/projects/ptb-manager/.env
 Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
 Environment=PODMAN_SOCK=/run/podman/podman.sock
-Environment=XDG_RUNTIME_DIR=/run/user/0
+
+# SYSTEMD ENV CHANGE: Point internal systemctl to our credential-stripped proxy bus
+Environment=XDG_RUNTIME_DIR=/run/user/1001
+Environment=DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1001/bus
 
 # Set paths for containerized environment
 Environment=PROJECTS_BASE=/host/projects
 Environment=QUADLETS_DIR=/host/quadlets
 
-# Install git, podman, and gh CLI. `gh auth setup-git` wires git's credential
-# helper to call back into `gh auth git-credential` on every git invocation -
-# that's just plumbing, not a shared identity: it resolves auth dynamically
-# from whatever GH_TOKEN is set in *that* subprocess's env, which the bot sets
-# per Telegram user via /ghauth for each gh/git call. Deliberately NOT paired
-# with a git credential cache - caching would leak one user's token into
-# another user's git calls for the cache TTL.
+# EXEC CHANGE: Installed `socat`, created the runtime directory, and backgrounded the proxy before running python
 Exec=sh -c "apt-get update && \
-    apt-get install -y git podman gh procps postgresql-client && \
+    apt-get install -y git podman gh procps postgresql-client socat && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* && \
     gh auth setup-git --hostname github.com && \
     pip install --no-cache-dir -r requirements.txt && \
+    mkdir -p /run/user/1001 && \
+    socat UNIX-LISTEN:/run/user/1001/bus,fork UNIX-CONNECT:/host/run/user/1001/bus & \
     python -u main.py"
-
-#Network=pgnet.network
 
 [Service]
 Restart=always
