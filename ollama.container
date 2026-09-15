@@ -1,0 +1,26 @@
+[Unit]
+Description="Ollama (local LLM, translation fallback for ptb-mn)"
+After=local-fs.target pgnet-network.service
+Wants=pgnet-network.service
+
+[Container]
+Image=docker.io/ollama/ollama:latest
+AutoUpdate=registry
+ContainerName=ollama
+LogDriver=journald
+
+# Model weights persist across container recreation
+Volume=ollama-data:/root/.ollama
+
+# Cap memory so a runaway/oversized model can't starve the other bots and
+# Postgres sharing this host (7.6GB total RAM, no GPU).
+PodmanArgs=--memory=3g
+
+# Reachable from other containers on this network as http://ollama:11434
+Network=pgnet.network
+
+[Service]
+Restart=always
+
+[Install]
+WantedBy=default.target
