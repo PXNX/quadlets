@@ -8,6 +8,7 @@ Requires=viz-qdrant.service ptb-nn-db.service
 Image=localhost/viz-rs:latest
 ContainerName=viz-rs
 PublishPort=3000:3000
+Volume=%h/projects/viz-rs/weights:/app/weights:ro
 
 EnvironmentFile=%h/projects/viz-rs/.env
 
