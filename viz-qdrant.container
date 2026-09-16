@@ -1,0 +1,20 @@
+[Unit]
+Description="Qdrant vector database for viz-rs"
+After=local-fs.target pgnet-network.service
+Wants=pgnet-network.service
+
+[Container]
+Image=docker.io/qdrant/qdrant:latest
+AutoUpdate=registry
+ContainerName=viz-qdrant
+
+Volume=viz-qdrant-data:/qdrant/storage
+
+Network=pgnet.network
+
+[Service]
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target default.target

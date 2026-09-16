@@ -1,0 +1,21 @@
+[Unit]
+Description="viz-rs (reverse image search backend for viz-sv)"
+After=local-fs.target pgnet-network.service viz-qdrant.service ptb-nn-db.service
+Wants=pgnet-network.service
+Requires=viz-qdrant.service ptb-nn-db.service
+
+[Container]
+Image=localhost/viz-rs:latest
+ContainerName=viz-rs
+PublishPort=3000:3000
+
+EnvironmentFile=%h/projects/viz-rs/.env
+
+Network=pgnet.network
+
+[Service]
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target default.target
