@@ -1,8 +1,8 @@
 [Unit]
 Description="viz-rs (reverse image search backend for viz-sv)"
-After=local-fs.target pgnet-network.service viz-qdrant.service ptb-nn-db.service
+After=local-fs.target pgnet-network.service viz-qdrant.service nn-db.service
 Wants=pgnet-network.service
-Requires=viz-qdrant.service ptb-nn-db.service
+Requires=viz-qdrant.service nn-db.service
 
 [Container]
 Image=localhost/viz-rs:latest
