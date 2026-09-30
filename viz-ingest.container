@@ -1,0 +1,27 @@
+[Unit]
+Description="viz-rs ingest (Telegram channels -> viz search index)"
+After=local-fs.target pgnet-network.service viz-qdrant.service viz-rustfs.service nn-db.service
+Wants=pgnet-network.service
+Requires=viz-qdrant.service viz-rustfs.service nn-db.service
+
+[Container]
+Image=localhost/viz-rs:latest
+ContainerName=viz-ingest
+Exec=/usr/local/bin/ingest
+Volume=%h/projects/viz-rs/models:/app/models:ro
+# Holds the Telegram session (TG_SESSION_PATH=/app/data/ingest.session) - treat like a password.
+Volume=%h/projects/viz-rs/data:/app/data
+Volume=%h/projects/viz-rs/channels.toml:/app/channels.toml:ro
+
+EnvironmentFile=%h/projects/viz-rs/.env
+Environment=CHANNELS_FILE=/app/channels.toml
+Environment=TESSERACT_BIN=tesseract
+
+Network=pgnet.network
+
+[Service]
+Restart=on-failure
+RestartSec=60
+
+# No [Install] section on purpose: ingest needs a one-time `ingest --login` (see the viz-rs
+# README) before it can run, so it's started by hand with `systemctl --user start viz-ingest`.

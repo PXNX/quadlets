@@ -1,14 +1,15 @@
 [Unit]
-Description="viz-rs (reverse image search backend for viz-sv)"
-After=local-fs.target pgnet-network.service viz-qdrant.service nn-db.service
+Description="viz-rs api (reverse image search backend for viz-sv)"
+After=local-fs.target pgnet-network.service viz-qdrant.service viz-rustfs.service nn-db.service
 Wants=pgnet-network.service
-Requires=viz-qdrant.service nn-db.service
+Requires=viz-qdrant.service viz-rustfs.service nn-db.service
 
 [Container]
 Image=localhost/viz-rs:latest
 ContainerName=viz-rs
-PublishPort=3000:3000
-Volume=%h/projects/viz-rs/weights:/app/weights:ro
+# Tailscale Funnel (https://mn.tail865185.ts.net:8443) proxies to host port 3000.
+PublishPort=3000:8080
+Volume=%h/projects/viz-rs/models:/app/models:ro
 
 EnvironmentFile=%h/projects/viz-rs/.env
 

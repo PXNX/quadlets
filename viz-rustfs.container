@@ -1,0 +1,23 @@
+[Unit]
+Description="RustFS (S3-compatible thumbnail storage for viz-rs)"
+After=local-fs.target pgnet-network.service
+Wants=pgnet-network.service
+
+[Container]
+Image=docker.io/rustfs/rustfs:latest
+AutoUpdate=registry
+ContainerName=viz-rustfs
+
+# Internal only: viz-rs serves the thumbnails at /thumbs/{key}.
+Volume=viz-rustfs-data:/data
+# RUSTFS_ACCESS_KEY / RUSTFS_SECRET_KEY, matching S3_ACCESS_KEY / S3_SECRET_KEY in viz-rs/.env
+EnvironmentFile=%h/projects/viz-rs/rustfs.env
+
+Network=pgnet.network
+
+[Service]
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=multi-user.target default.target
