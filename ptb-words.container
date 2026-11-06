@@ -11,9 +11,9 @@ ContainerName=ptb-words
 LogDriver=journald
 WorkingDir=/app
 # bot/data/donations.db lives in this bind mount, so the ledger survives restarts and redeploys.
-Volume=%h/projects/ptb-words/bot:/app:Z
+Volume=%h/projects/words-sv/bot/bot:/app:Z
 
-EnvironmentFile=%h/projects/ptb-words/.env
+EnvironmentFile=%h/projects/words-sv/bot/.env
 Environment=CONTAINER=true
 Environment=PYTHONDONTWRITEBYTECODE=1
 Environment=PYTHONUNBUFFERED=1
