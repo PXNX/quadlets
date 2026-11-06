@@ -1,0 +1,27 @@
+[Unit]
+Description="PostgreSQL Database for ptb-words (bot of words-sv)"
+After=local-fs.target pgnet-network.service
+Wants=pgnet-network.service
+
+[Container]
+Image=docker.io/library/postgres:17
+AutoUpdate=registry
+ContainerName=words-db
+
+Environment=POSTGRES_USER=words
+Environment=POSTGRES_DB=words
+Environment=PGDATA=/var/lib/postgresql/data/pgdata
+# POSTGRES_PASSWORD, kept outside this repo
+EnvironmentFile=%h/.config/containers/words-db.env
+
+Volume=words-db-data.volume:/var/lib/postgresql/data
+
+# No published port: the bot reaches it as words-db on pgnet
+Network=pgnet.network
+
+[Service]
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,27 @@
+[Unit]
+Description="PostgreSQL Database for the World War 3 bot (bot of ww3-sv)"
+After=local-fs.target pgnet-network.service
+Wants=pgnet-network.service
+
+[Container]
+Image=docker.io/library/postgres:17
+AutoUpdate=registry
+ContainerName=ww3-db
+
+Environment=POSTGRES_USER=ww3
+Environment=POSTGRES_DB=ww3
+Environment=PGDATA=/var/lib/postgresql/data/pgdata
+# POSTGRES_PASSWORD, kept outside this repo
+EnvironmentFile=%h/.config/containers/ww3-db.env
+
+Volume=ww3-db-data.volume:/var/lib/postgresql/data
+
+# No published port: the bot reaches it as ww3-db on pgnet
+Network=pgnet.network
+
+[Service]
+Restart=on-failure
+RestartSec=30
+
+[Install]
+WantedBy=default.target
