@@ -1,0 +1,31 @@
+[Unit]
+Description="ww3-sv"
+After=local-fs.target
+
+[Container]
+# The Telegram bot of World War 3 (@game_ww3_bot) lives in bot/ of the game's repository. No custom
+# image: the runner is plain Bun, dependencies are installed from bot/package.json at start.
+Image=docker.io/oven/bun:1
+AutoUpdate=registry
+ContainerName=ww3-sv
+
+LogDriver=journald
+WorkingDir=/app
+# bot/data/ww3.db (the purchase ledger) and bot/config.local.json live in this bind mount, so they
+# survive restarts and redeploys.
+Volume=%h/projects/ww3-sv/bot:/app:Z
+
+# The Mini App endpoints; only Tailscale Funnel (:10000 → 127.0.0.1:3790) exposes them publicly
+PublishPort=127.0.0.1:3790:3790
+
+EnvironmentFile=%h/projects/ww3-sv/.env
+Environment=CONTAINER=true
+
+Exec=sh -c "bun install --production && bun scripts/build.mjs --no-app && bun runner/main.js"
+
+[Service]
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
